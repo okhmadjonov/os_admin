@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState, Dispatch } from "@/redux";
-import { User, Lock, Eye, EyeOff, ShieldCheck, ArrowRight } from "lucide-react";
+import { User, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { toast } from "react-toastify";
-import AnimatedBackground from "@/components/Animated/AnimatedBackground";
+import vectorBg from "@/assets/vector.png";
 import styles from "./Login.module.scss";
 
 const Login: React.FC = () => {
@@ -39,16 +39,22 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className={styles.loginContainer}>
-      <AnimatedBackground />
-
+    <div
+      className={styles.loginContainer}
+      style={{
+        backgroundImage: `url(${vectorBg})`,
+        backgroundRepeat: "repeat",
+        backgroundSize: "280px auto",
+      }}
+    >
       <div className={styles.loginCard}>
         <div className={styles.header}>
-          <div className={styles.logoBadge}>
-            <ShieldCheck size={32} />
+          <div className={styles.brand}>
+            <div className={styles.logoIcon} />
+            <span className={styles.logoText}>Sololearn</span>
           </div>
           <h2>Tizimga Kirish</h2>
-          <p>OS Admin boshqaruv tizimiga xush kelibsiz</p>
+          <p>Sololearn boshqaruv tizimiga xush kelibsiz</p>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.form}>

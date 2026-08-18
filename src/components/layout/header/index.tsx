@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import { Bell } from "lucide-react";
+import { FaRegUser } from "react-icons/fa";
 import styles from "./Header.module.scss";
 
 const Header: React.FC = () => {
@@ -12,7 +13,7 @@ const Header: React.FC = () => {
       <div className={styles.brandAndTitle}>
         <div className={styles.brand}>
           <div className={styles.logoIcon} />
-          <span className={styles.logoText}>LavaBiz.</span>
+          <span className={styles.logoText}>Sololearn</span>
         </div>
         <h1 className={styles.pageTitle}>User management</h1>
       </div>
@@ -24,16 +25,11 @@ const Header: React.FC = () => {
         </button>
 
         <div className={styles.userProfile}>
-          <img
-            src={
-              user?.avatar ||
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250"
-            }
-            alt="Avatar"
-            className={styles.avatar}
-          />
+          <div className={styles.userAvatarIcon}>
+            <FaRegUser size={22} />
+          </div>
           <span className={styles.userName}>
-            {user?.fullName || "Edvard salvator"}
+            {user?.fullName || "Martin Iden"}
           </span>
         </div>
       </div>

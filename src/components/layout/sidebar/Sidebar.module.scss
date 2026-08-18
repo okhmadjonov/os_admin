@@ -28,14 +28,14 @@
 
     &:hover {
       background: #eaeff4;
-      color: #1e293b;
+      color: #152c43;
     }
 
     &.active {
-      background: #2d3b4e;
+      background: #152c43;
       color: #ffffff;
       font-weight: 600;
-      box-shadow: 0 4px 12px rgba(45, 59, 78, 0.2);
+      box-shadow: 0 4px 12px rgba(21, 44, 67, 0.25);
 
       .icon {
         color: #ffffff;
