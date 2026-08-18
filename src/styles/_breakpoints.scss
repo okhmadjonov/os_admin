@@ -1,0 +1,42 @@
+// SCSS Breakpoint Variables and Responsive Mixins
+
+$bp-xs: 480px;
+$bp-sm: 640px;
+$bp-md: 768px;
+$bp-lg: 992px;
+$bp-xl: 1200px;
+$bp-macbook: 1440px;
+$bp-xxl: 1600px;
+$bp-ultrawide: 1920px;
+
+@mixin respond-to($media) {
+  @if $media == xs {
+    @media only screen and (max-width: #{$bp-xs}) {
+      @content;
+    }
+  } @else if $media == sm {
+    @media only screen and (max-width: #{$bp-sm}) {
+      @content;
+    }
+  } @else if $media == md {
+    @media only screen and (max-width: #{$bp-md}) {
+      @content;
+    }
+  } @else if $media == lg {
+    @media only screen and (max-width: #{$bp-lg}) {
+      @content;
+    }
+  } @else if $media == xl {
+    @media only screen and (max-width: #{$bp-xl}) {
+      @content;
+    }
+  } @else if $media == macbook {
+    @media only screen and (max-width: #{$bp-macbook}) {
+      @content;
+    }
+  } @else if $media == xxl {
+    @media only screen and (max-width: #{$bp-xxl}) {
+      @content;
+    }
+  }
+}
