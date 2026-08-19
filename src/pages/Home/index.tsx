@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Users, Search, ChevronDown, Filter, ChevronLeft, ChevronRight } from "lucide-react";
+import { Users, Search, ChevronDown, Filter } from "lucide-react";
+import Table, { Column } from "@/components/table";
+import Pagination from "@/components/pagination";
 import styles from "./Home.module.scss";
 
 interface UserRow {
@@ -32,6 +34,14 @@ const mockUsersData: UserRow[] = [
 const Home: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const filteredUsers = mockUsersData.filter(
+    (u) =>
+      u.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      u.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      u.city.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const toggleSelectAll = () => {
     if (selectedIds.length === filteredUsers.length) {
@@ -41,20 +51,38 @@ const Home: React.FC = () => {
     }
   };
 
-  const toggleSelectRow = (id: number) => {
-    if (selectedIds.includes(id)) {
-      setSelectedIds(selectedIds.filter((item) => item !== id));
+  const toggleSelectRow = (id: string | number) => {
+    const numId = Number(id);
+    if (selectedIds.includes(numId)) {
+      setSelectedIds(selectedIds.filter((item) => item !== numId));
     } else {
-      setSelectedIds([...selectedIds, id]);
+      setSelectedIds([...selectedIds, numId]);
     }
   };
 
-  const filteredUsers = mockUsersData.filter(
-    (u) =>
-      u.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      u.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      u.city.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const columns: Column<UserRow>[] = [
+    {
+      key: "name",
+      header: "User Name",
+      render: (user) => <span className={styles.userNameCell}>{user.name}</span>,
+    },
+    {
+      key: "email",
+      header: "Email Address",
+      render: (user) => <span className={styles.emailCell}>{user.email}</span>,
+    },
+    {
+      key: "city",
+      header: "City",
+      render: (user) => <span className={styles.cityCell}>{user.city}</span>,
+    },
+    {
+      key: "date",
+      header: "Account Created date",
+      align: "right",
+      render: (user) => <span className={styles.dateCell}>{user.date}</span>,
+    },
+  ];
 
   return (
     <div className={styles.userMgmtContainer}>
@@ -184,63 +212,23 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        {/* Data Table */}
-        <div className={styles.tableWrapper}>
-          <table>
-            <thead>
-              <tr>
-                <th>
-                  <input
-                    type="checkbox"
-                    checked={
-                      filteredUsers.length > 0 &&
-                      selectedIds.length === filteredUsers.length
-                    }
-                    onChange={toggleSelectAll}
-                  />
-                </th>
-                <th>User Name</th>
-                <th>Email Address</th>
-                <th>City</th>
-                <th style={{ textAlign: "right" }}>Account Created date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.map((user) => (
-                <tr key={user.id}>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={selectedIds.includes(user.id)}
-                      onChange={() => toggleSelectRow(user.id)}
-                    />
-                  </td>
-                  <td className={styles.userNameCell}>{user.name}</td>
-                  <td className={styles.emailCell}>{user.email}</td>
-                  <td className={styles.cityCell}>{user.city}</td>
-                  <td className={styles.dateCell}>{user.date}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {/* Global Data Table */}
+        <Table
+          data={filteredUsers}
+          columns={columns}
+          keyExtractor={(user) => user.id}
+          selectable
+          selectedKeys={selectedIds}
+          onSelectAll={toggleSelectAll}
+          onSelectRow={toggleSelectRow}
+        />
 
-        {/* Bottom Pagination */}
-        <div className={styles.paginationContainer}>
-          <div className={styles.pagination}>
-            <button className={styles.pageBtn}>
-              <ChevronLeft size={16} /> Previous
-            </button>
-            <button className={`${styles.pageBtn} ${styles.numBtn} ${styles.activeNum}`}>
-              1
-            </button>
-            <button className={`${styles.pageBtn} ${styles.numBtn}`}>2</button>
-            <button className={`${styles.pageBtn} ${styles.numBtn}`}>3</button>
-            <button className={styles.pageBtn}>
-              Next <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
+        {/* Global Pagination */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={3}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
       </div>
     </div>
   );
