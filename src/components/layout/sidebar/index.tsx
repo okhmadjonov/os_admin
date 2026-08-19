@@ -2,27 +2,9 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "@/redux";
-import {
-  Home,
-  Users,
-  ClipboardList,
-  Box,
-  BarChart2,
-  FileText,
-  Ticket,
-  LogOut,
-} from "lucide-react";
+import { LogOut } from "lucide-react";
 import styles from "./Sidebar.module.scss";
-
-const menuItems = [
-  { path: "/dashboard", label: "Dashboard", icon: Home },
-  { path: "/", label: "Users", icon: Users },
-  { path: "/orders", label: "Orders", icon: ClipboardList },
-  { path: "/products", label: "Products", icon: Box },
-  { path: "/analysis", label: "Analysis", icon: BarChart2 },
-  { path: "/blogs", label: "blogs", icon: FileText },
-  { path: "/tickets", label: "Tickets", icon: Ticket },
-];
+import { menuItems } from "@/config/menu";
 
 const Sidebar: React.FC = () => {
   const dispatch = useDispatch<Dispatch>();
