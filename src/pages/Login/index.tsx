@@ -53,15 +53,12 @@ const Login: React.FC = () => {
             <div className={styles.logoIcon} />
             <span className={styles.logoText}>Sololearn</span>
           </div>
-          <h2>Tizimga Kirish</h2>
-          <p>Sololearn boshqaruv tizimiga xush kelibsiz</p>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.form}>
           {error && <div className={styles.errorAlert}>{error}</div>}
 
           <div className={styles.inputGroup}>
-            <label htmlFor="username">Foydalanuvchi nomi</label>
             <div className={styles.inputWrapper}>
               <User size={18} className={styles.fieldIcon} />
               <input
@@ -77,7 +74,6 @@ const Login: React.FC = () => {
           </div>
 
           <div className={styles.inputGroup}>
-            <label htmlFor="password">Parol</label>
             <div className={styles.inputWrapper}>
               <Lock size={18} className={styles.fieldIcon} />
               <input
@@ -122,14 +118,7 @@ const Login: React.FC = () => {
               Demo To'ldirish
             </button>
           </div>
-          <div className={styles.demoCredentials}>
-            <div>
-              Login: <code>admin</code>
-            </div>
-            <div>
-              Parol: <code>admin123</code>
-            </div>
-          </div>
+      
         </div>
       </div>
     </div>

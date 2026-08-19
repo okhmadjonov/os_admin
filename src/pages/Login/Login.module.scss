@@ -12,7 +12,7 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background-color: #eaeef3;
+  background-color: #efefef;
   background-image: url("@/assets/vector.png");
   background-size: 280px auto;
   background-repeat: repeat;
@@ -23,11 +23,13 @@
     z-index: 10;
     width: 100%;
     max-width: 440px;
-    background: #ffffff;
+    background: #efefef;
     border: 1px solid #e2e8f0;
     border-radius: 28px;
     padding: 40px 36px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow:
+      0 20px 40px rgba(0, 0, 0, 0.08),
+      0 1px 3px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -58,17 +60,6 @@
           color: #152c43;
           letter-spacing: -0.5px;
         }
-      }
-
-      h2 {
-        font-size: 1.35rem;
-        font-weight: 700;
-        color: #152c43;
-      }
-
-      p {
-        font-size: 0.88rem;
-        color: #64748b;
       }
     }
 
@@ -223,20 +214,6 @@
           &:hover {
             background: #0d1e2e;
           }
-        }
-      }
-
-      .demoCredentials {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.78rem;
-        color: #64748b;
-        code {
-          color: #152c43;
-          background: #e2e8f0;
-          padding: 2px 6px;
-          border-radius: 4px;
-          font-weight: 600;
         }
       }
     }

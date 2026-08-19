@@ -15,16 +15,16 @@ body {
 }
 
 :root {
-  --bg-canvas: #eaeef3;
-  --bg-primary: #ffffff;
-  --bg-card: #ffffff;
+  --bg-canvas: #efefef;
+  --bg-primary: #efefef;
+  --bg-card: #efefef;
   --bg-card-alt: #f7f9fa;
   --text-primary: #152c43;
   --text-secondary: #8a99ad;
   --text-muted: #a0aec0;
   --border-color: #e9edf2;
   --sidebar-active-bg: #152c43;
-  --sidebar-active-text: #ffffff;
+  --sidebar-active-text: #efefef;
   --sidebar-inactive-bg: #f4f6f8;
   --sidebar-inactive-text: #64748b;
   --color-green: #10b981;
@@ -34,10 +34,9 @@ body {
 
 body {
   background-color: var(--bg-canvas);
-  background-image: url("@/assets/vector.png");
+  background-image: url("../assets/vector.png");
   background-size: 280px auto;
   background-repeat: repeat;
-  background-position: top left;
   background-attachment: fixed;
   color: var(--text-primary);
 }
@@ -49,7 +48,6 @@ body {
   overflow: hidden;
 }
 
-/* Custom subtle scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
