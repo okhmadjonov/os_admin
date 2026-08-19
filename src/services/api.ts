@@ -145,12 +145,26 @@ export interface ApiResponse<T> {
   statusCode: number;
 }
 
+export interface RegisterParams {
+  userName: string;
+  email: string;
+  password: string;
+  firstName?: string;
+  lastName?: string;
+  phoneNumber?: string;
+  role?: string;
+}
+
 export const authApi = {
   login: async (userNameOrEmail: string, password: string): Promise<ApiResponse<AuthResponseDto>> => {
     const response = await api.post<ApiResponse<AuthResponseDto>>("/Auth/login", {
       userNameOrEmail,
       password,
     });
+    return response.data;
+  },
+  register: async (params: RegisterParams): Promise<ApiResponse<AuthResponseDto>> => {
+    const response = await api.post<ApiResponse<AuthResponseDto>>("/Auth/register", params);
     return response.data;
   },
   refreshToken: async (accessToken: string, refreshToken: string): Promise<ApiResponse<AuthResponseDto>> => {
