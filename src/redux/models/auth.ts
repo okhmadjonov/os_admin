@@ -1,32 +1,9 @@
 import { createModel } from "@rematch/core";
 import { RootModel } from "./index";
 import { AuthState, LoginParams } from "@/types/auth";
-import { UserRole } from "@/types/user";
-
-const MOCK_USERS = [
-  {
-    id: "usr_1",
-    username: "admin",
-    password: "admin123",
-    fullName: "Edvard salvator",
-    email: "admin@osadmin.uz",
-    role: UserRole.Admin,
-    department: "Tizim ma'muriyati",
-    position: "Bosh administrator",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250",
-  },
-  {
-    id: "usr_2",
-    username: "user",
-    password: "user123",
-    fullName: "Jamshid Qodirov",
-    email: "user@osadmin.uz",
-    role: UserRole.Ministry,
-    department: "Vazirlik sektori",
-    position: "Yetakchi mutaxassis",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=250",
-  },
-];
+import { IUser, UserRole } from "@/types/user";
+import { authApi } from "@/services/api";
+import { CookieManager } from "@/utils/cookies";
 
 const initialState: AuthState = {
   initialized: false,
@@ -74,59 +51,70 @@ export const auth = createModel<RootModel>()({
     async login(params: LoginParams) {
       dispatch.auth.setLoading(true);
       try {
-        // Simulate network delay
-        await new Promise((resolve) => setTimeout(resolve, 800));
+        const response = await authApi.login(params.username, params.password);
 
-        const targetUser = MOCK_USERS.find(
-          (u) =>
-            u.username.toLowerCase() === params.username.toLowerCase() &&
-            u.password === params.password
-        );
-
-        if (!targetUser) {
-          dispatch.auth.setError("Foydalanuvchi nomi yoki parol noto'g'ri!");
+        if (!response.isSuccess || !response.data) {
+          dispatch.auth.setError(response.message || "Foydalanuvchi nomi yoki parol noto'g'ri!");
           return false;
         }
 
-        const { password, ...userWithoutPassword } = targetUser;
-        const fakeToken = `mock-jwt-token-${targetUser.id}-${Date.now()}`;
+        const authData = response.data;
+        const displayFullName =
+          [authData.user.firstName, authData.user.lastName].filter(Boolean).join(" ") ||
+          authData.user.userName;
 
-        localStorage.setItem("auth_token", fakeToken);
-        localStorage.setItem("auth_user", JSON.stringify(userWithoutPassword));
+        const mappedUser: IUser = {
+          id: authData.user.id,
+          username: authData.user.userName,
+          fullName: displayFullName,
+          email: authData.user.email,
+          role: UserRole.Admin,
+          avatar: authData.user.photoUrl || undefined,
+          department: authData.user.role || "Tizim ma'muriyati",
+          position: authData.user.role || "SuperAdmin",
+        };
+
+        CookieManager.setAuthToken(authData.accessToken);
+        if (authData.refreshToken) {
+          CookieManager.setRefreshToken(authData.refreshToken);
+        }
+        CookieManager.setAuthUser(mappedUser);
 
         dispatch.auth.setAuthSuccess({
-          user: userWithoutPassword,
-          token: fakeToken,
+          user: mappedUser,
+          token: authData.accessToken,
         });
 
         return true;
       } catch (err: any) {
-        dispatch.auth.setError(err.message || "Tizimga kirishda xatolik yuz berdi");
+        const errorMessage =
+          err.response?.data?.message ||
+          err.response?.data?.Errors?.[0] ||
+          err.message ||
+          "Tizimga kirishda xatolik yuz berdi";
+        dispatch.auth.setError(errorMessage);
         return false;
       }
     },
 
     checkAuth() {
       try {
-        const token = localStorage.getItem("auth_token");
-        const savedUserStr = localStorage.getItem("auth_user");
+        const token = CookieManager.getAuthToken();
+        const user = CookieManager.getAuthUser<IUser>();
 
-        if (token && savedUserStr) {
-          const user = JSON.parse(savedUserStr);
+        if (token && user) {
           dispatch.auth.setAuthSuccess({ user, token });
         } else {
           dispatch.auth.setInitialized(true);
         }
       } catch (e) {
-        localStorage.removeItem("auth_token");
-        localStorage.removeItem("auth_user");
+        CookieManager.clearAuthCookies();
         dispatch.auth.setInitialized(true);
       }
     },
 
     logout() {
-      localStorage.removeItem("auth_token");
-      localStorage.removeItem("auth_user");
+      CookieManager.clearAuthCookies();
       dispatch.auth.setLogout();
     },
   }),

@@ -33,9 +33,9 @@ const Login: React.FC = () => {
   };
 
   const handleFillDemo = () => {
-    setUsername("admin");
-    setPassword("admin123");
-    toast.info("Demo ma'lumotlar kiritildi");
+    setUsername("martin");
+    setPassword("Admin123!");
+    toast.info("Admin backend ma'lumotlari kiritildi (martin / Admin123!)");
   };
 
   return (
@@ -51,7 +51,7 @@ const Login: React.FC = () => {
         <div className={styles.header}>
           <div className={styles.brand}>
             <div className={styles.logoIcon} />
-            <span className={styles.logoText}>Sololearn</span>
+            <span className={styles.logoText}>Online Store Admin</span>
           </div>
         </div>
 
@@ -64,7 +64,7 @@ const Login: React.FC = () => {
               <input
                 id="username"
                 type="text"
-                placeholder="Masalan: admin"
+                placeholder="Masalan: martin yoki email"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 disabled={loading}
@@ -113,12 +113,11 @@ const Login: React.FC = () => {
 
         <div className={styles.demoBox}>
           <div className={styles.demoHeader}>
-            <span>Vaqtincha Statik Kirish:</span>
+            <span>Backend Admin (Seeded User):</span>
             <button type="button" onClick={handleFillDemo}>
-              Demo To'ldirish
+              Demo To'ldirish (martin)
             </button>
           </div>
-      
         </div>
       </div>
     </div>
